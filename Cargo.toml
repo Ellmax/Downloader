@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+content_disposition = "0.4.0"
 fluent-templates = "0.15.1"
 futures-util = "0.3.34"
 reqwest = {version = "0.13.4", features = ["json", "stream"]}
