@@ -17,6 +17,8 @@ use tokio::io::{AsyncSeekExt, AsyncWriteExt};
 
 use content_disposition::parse_content_disposition;
 
+use clap::Parser;
+
 #[derive(Error, Debug)]
 enum DownloadError {
     #[error("Network error: {0}")]
@@ -34,17 +36,20 @@ struct Part {
     end: Option<u64>,
     temp_path: PathBuf,
 }
+#[derive(Parser)]
+#[command(version)]
+struct Args {
+    #[arg(short, long, default_value_t = 1)]
+    parts: usize,
+
+    url: String,
+}
 
 #[tokio::main]
 async fn main() {
-    let args: Vec<String> = std::env::args().collect();
+    let args = Args::parse();
 
-    if args.len() != 2 {
-        eprintln!("Usage: dlr <url>");
-        exit(2)
-    }
-
-    let d: Result<(), DownloadError> = download(&args[1], 2).await; // я уберу хардкод кол-ва частей, честно...
+    let d: Result<(), DownloadError> = download(&args.url, args.parts).await;
 
     match d {
         Ok(..) => println!("ok"),
