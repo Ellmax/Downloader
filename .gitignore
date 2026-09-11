@@ -1,2 +1,5 @@
 /target
 /.vscode
+/cargo-home
+/*.pkg.tar.zst
+/pkg
